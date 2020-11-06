@@ -1,0 +1,68 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BCRYPT_LOG_ROUNDS	project/server/config.py	/^    BCRYPT_LOG_ROUNDS = 13$/;"	v	class:BaseConfig
+BCRYPT_LOG_ROUNDS	project/server/config.py	/^    BCRYPT_LOG_ROUNDS = 4$/;"	v	class:DevelopmentConfig
+BCRYPT_LOG_ROUNDS	project/server/config.py	/^    BCRYPT_LOG_ROUNDS = 4$/;"	v	class:TestingConfig
+BaseConfig	project/server/config.py	/^class BaseConfig:$/;"	c
+BaseTestCase	project/tests/base.py	/^class BaseTestCase(TestCase):$/;"	c
+DEBUG	project/server/config.py	/^    DEBUG = False$/;"	v	class:BaseConfig
+DEBUG	project/server/config.py	/^    DEBUG = False$/;"	v	class:ProductionConfig
+DEBUG	project/server/config.py	/^    DEBUG = True$/;"	v	class:DevelopmentConfig
+DEBUG	project/server/config.py	/^    DEBUG = True$/;"	v	class:TestingConfig
+DevelopmentConfig	project/server/config.py	/^class DevelopmentConfig(BaseConfig):$/;"	c
+PRESERVE_CONTEXT_ON_EXCEPTION	project/server/config.py	/^    PRESERVE_CONTEXT_ON_EXCEPTION = False$/;"	v	class:TestingConfig
+ProductionConfig	project/server/config.py	/^class ProductionConfig(BaseConfig):$/;"	c
+RegisterAPI	project/server/auth/views.py	/^class RegisterAPI(MethodView):$/;"	c
+SECRET_KEY	project/server/config.py	/^    SECRET_KEY = get_secret_key()$/;"	v	class:BaseConfig
+SQLALCHEMY_DATABASE_URI	project/server/config.py	/^    SQLALCHEMY_DATABASE_URI = 'postgresql:\/\/\/example'$/;"	v	class:ProductionConfig
+SQLALCHEMY_DATABASE_URI	project/server/config.py	/^    SQLALCHEMY_DATABASE_URI = postgres_local_base + database_name + '_test'$/;"	v	class:TestingConfig
+SQLALCHEMY_DATABASE_URI	project/server/config.py	/^    SQLALCHEMY_DATABASE_URI = postgres_local_base + database_name$/;"	v	class:DevelopmentConfig
+SQLALCHEMY_TRACK_MODIFICATIONS	project/server/config.py	/^    SQLALCHEMY_TRACK_MODIFICATIONS = False$/;"	v	class:BaseConfig
+TESTING	project/server/config.py	/^    TESTING = True$/;"	v	class:TestingConfig
+TestAuthBlueprint	project/tests/test_auth.py	/^class TestAuthBlueprint(BaseTestCase):$/;"	c
+TestDevelopmentConfig	project/tests/test__config.py	/^class TestDevelopmentConfig(TestCase):$/;"	c
+TestProductionConfig	project/tests/test__config.py	/^class TestProductionConfig(TestCase):$/;"	c
+TestTestingConfig	project/tests/test__config.py	/^class TestTestingConfig(TestCase):$/;"	c
+TestUserModel	project/tests/test_user_model.py	/^class TestUserModel(BaseTestCase):$/;"	c
+TestingConfig	project/server/config.py	/^class TestingConfig(BaseConfig):$/;"	c
+User	project/server/models.py	/^class User(db.Model):$/;"	c
+WARN	project/server/log.py	/^def WARN(msg, tag=""):$/;"	f
+__init__	project/server/models.py	/^    def __init__(self, email, password, admin=False):$/;"	m	class:User
+__tablename__	project/server/models.py	/^    __tablename__ = "users"$/;"	v	class:User
+admin	project/server/models.py	/^    admin = db.Column(db.Boolean, nullable=False, default=False)$/;"	v	class:User
+app	project/server/__init__.py	/^app = Flask(__name__)$/;"	v
+app_settings	project/server/__init__.py	/^app_settings = os.getenv($/;"	v
+auth_blueprint	project/server/auth/views.py	/^auth_blueprint = Blueprint('auth', __name__)$/;"	v
+basedir	project/server/config.py	/^basedir = os.path.abspath(os.path.dirname(__file__))$/;"	v
+bcrypt	project/server/__init__.py	/^bcrypt = Bcrypt(app)$/;"	v
+create_app	project/tests/base.py	/^    def create_app(self):$/;"	m	class:BaseTestCase
+create_app	project/tests/test__config.py	/^    def create_app(self):$/;"	m	class:TestDevelopmentConfig
+create_app	project/tests/test__config.py	/^    def create_app(self):$/;"	m	class:TestProductionConfig
+create_app	project/tests/test__config.py	/^    def create_app(self):$/;"	m	class:TestTestingConfig
+database_name	project/server/config.py	/^database_name = 'flask_jwt_auth'$/;"	v
+db	project/server/__init__.py	/^db = SQLAlchemy(app)$/;"	v
+decode_auth_token	project/server/models.py	/^    def decode_auth_token(auth_token):$/;"	m	class:User
+email	project/server/models.py	/^    email = db.Column(db.String(255), unique=True, nullable=False)$/;"	v	class:User
+encode_auth_token	project/server/models.py	/^    def encode_auth_token(self, user_id):$/;"	m	class:User
+get_log	project/server/log.py	/^def get_log(tag=""):$/;"	f
+get_secret_key	project/server/config.py	/^def get_secret_key():$/;"	f
+id	project/server/models.py	/^    id = db.Column(db.Integer, primary_key=True, autoincrement=True)$/;"	v	class:User
+methods	project/server/auth/views.py	/^    methods=['POST']$/;"	v	class:RegisterAPI
+password	project/server/models.py	/^    password = db.Column(db.String(255), nullable=False)$/;"	v	class:User
+post	project/server/auth/views.py	/^    def post(self):$/;"	m	class:RegisterAPI
+postgres_local_base	project/server/config.py	/^postgres_local_base = 'postgresql:\/\/\/'$/;"	v
+registered_on	project/server/models.py	/^    registered_on = db.Column(db.DateTime, nullable=False)$/;"	v	class:User
+registration_view	project/server/auth/views.py	/^registration_view = RegisterAPI.as_view('register_api')$/;"	v
+setUp	project/tests/base.py	/^    def setUp(self):$/;"	m	class:BaseTestCase
+tearDown	project/tests/base.py	/^    def tearDown(self):$/;"	m	class:BaseTestCase
+test_app_is_development	project/tests/test__config.py	/^    def test_app_is_development(self):$/;"	m	class:TestDevelopmentConfig
+test_app_is_production	project/tests/test__config.py	/^    def test_app_is_production(self):$/;"	m	class:TestProductionConfig
+test_app_is_testing	project/tests/test__config.py	/^    def test_app_is_testing(self):$/;"	m	class:TestTestingConfig
+test_decode_auth_token	project/tests/test_user_model.py	/^    def test_decode_auth_token(self):$/;"	m	class:TestUserModel
+test_encode_auth_token	project/tests/test_user_model.py	/^    def test_encode_auth_token(self):$/;"	m	class:TestUserModel
+test_registration	project/tests/test_auth.py	/^    def test_registration(self):$/;"	m	class:TestAuthBlueprint
+view_func	project/server/auth/views.py	/^    view_func=registration_view,$/;"	v	class:RegisterAPI
