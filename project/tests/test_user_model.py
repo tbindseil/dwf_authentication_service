@@ -8,39 +8,31 @@ from project.tests.base import BaseTestCase
 
 
 class TestUserModel(BaseTestCase):
+    user = None
 
-    def test_encode_auth_token(self):
-        user = User(
+    def setUp(self):
+        BaseTestCase.setUp(self)
+        self.user = User(
             email='test@test.com',
             password='test'
         )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
-        auth_token = user.encode_auth_token(user.id)
+
+
+    def test_encode_auth_token(self):
+        auth_token = self.user.encode_auth_token(self.user.id)
         self.assertTrue(isinstance(auth_token, bytes))
 
     @patch('jwt.encode')
     def test_encode_auth_token_throws(self, mock_encode):
         mock_encode.side_effect = Exception
 
-        user = User(
-            email='test@test.com',
-            password='test'
-        )
-        db.session.add(user)
-        db.session.commit()
-
-        output = user.encode_auth_token(user.id)
+        output = self.user.encode_auth_token(self.user.id)
         assert(output, Exception)
 
     def test_decode_auth_token(self):
-        user = User(
-            email='test@test.com',
-            password='test'
-        )
-        db.session.add(user)
-        db.session.commit()
-        auth_token = user.encode_auth_token(user.id)
+        auth_token = self.user.encode_auth_token(self.user.id)
         self.assertTrue(isinstance(auth_token, bytes))
         self.assertTrue(User.decode_auth_token(auth_token.decode("utf-8")) == 1)
 
@@ -48,13 +40,7 @@ class TestUserModel(BaseTestCase):
     def test_decode_auth_token_invalid_token(self, mock_decode):
         mock_decode.side_effect = jwt.InvalidTokenError
 
-        user = User(
-            email='test@test.com',
-            password='test'
-        )
-        db.session.add(user)
-        db.session.commit()
-        auth_token = user.encode_auth_token(user.id)
+        auth_token = self.user.encode_auth_token(self.user.id)
         self.assertTrue(isinstance(auth_token, bytes))
         self.assertTrue(User.decode_auth_token(auth_token.decode("utf-8")) ==
                        "Invalid token. Please log in again.")
