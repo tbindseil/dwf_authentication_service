@@ -43,6 +43,7 @@ class TestUserBlueprint(BaseTestCase):
             # blacklist a valid token
             blacklist_token = BlacklistToken(
                 token=json.loads(resp_register.data.decode())['auth_token'])
+            blacklist_token.__repr__()
             db.session.add(blacklist_token)
             db.session.commit()
             response = self.client.get(

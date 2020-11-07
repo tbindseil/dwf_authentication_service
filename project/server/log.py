@@ -3,7 +3,7 @@ import logging
 def get_log(tag=""):
     #this line is important
     logging.basicConfig()
-    log = logging.getLogger("LOG")
+    log = logging.getLogger(tag)
     return log;
 
 def WARN(msg, tag=""):
