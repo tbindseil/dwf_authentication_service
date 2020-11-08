@@ -21,6 +21,7 @@ COV.start()
 
 from project.server import app, db, models
 
+from project.tests.test_user_model import TestUserModel
 
 migrate = Migrate(app, db)
 manager = Manager(app)
@@ -39,10 +40,16 @@ def test():
     return 1
 
 
-@manager.command
-def cov():
-    """Runs the unit tests with coverage."""
-    tests = unittest.TestLoader().discover('project/tests')
+@manager.option('-c', '--class', dest='test_class', default='all')
+def cov(test_class):
+    """Runs the unit tests with coverage.
+       If given a class  name, will determine coverage from that class"""
+    if test_class == 'all':
+        tests = unittest.TestLoader().discover('project/tests')
+    else:
+        # note, test module must be imported above, doing lazily for now
+        test_module = globals()[test_class]
+        tests = unittest.TestLoader().loadTestsFromTestCase(test_module)
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
         COV.stop()
