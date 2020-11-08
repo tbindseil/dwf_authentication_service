@@ -23,6 +23,7 @@ from project.server import app, db, models
 
 # testing classes
 from project.tests.test_user_model import TestUserModel
+from project.tests.test_blacklist_token_model import TestBlacklistTokenModel
 from project.tests.test_log import TestLog
 
 migrate = Migrate(app, db)
