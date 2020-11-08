@@ -25,6 +25,7 @@ from project.server import app, db, models
 from project.tests.test_user_model import TestUserModel
 from project.tests.test_blacklist_token_model import TestBlacklistTokenModel
 from project.tests.test_log import TestLog
+from project.tests.test__config import TestDevelopmentConfig, TestTestingConfig, TestProductionConfig
 
 migrate = Migrate(app, db)
 manager = Manager(app)

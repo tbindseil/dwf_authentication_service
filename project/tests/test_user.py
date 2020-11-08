@@ -10,7 +10,7 @@ class TestUserBlueprint(BaseTestCase):
         with self.client:
             resp_register = self.register_user(email='joe@gmail.com', password='123456')
             response = self.client.get(
-                '/auth/status',
+                '/auth/user',
                 headers=dict(
                     Authorization='Bearer ' + json.loads(
                         resp_register.data.decode()
@@ -47,7 +47,7 @@ class TestUserBlueprint(BaseTestCase):
             db.session.add(blacklist_token)
             db.session.commit()
             response = self.client.get(
-                '/auth/status',
+                '/auth/user',
                 headers=dict(
                     Authorization='Bearer ' + json.loads(
                         resp_register.data.decode()
