@@ -21,7 +21,9 @@ COV.start()
 
 from project.server import app, db, models
 
+# testing classes
 from project.tests.test_user_model import TestUserModel
+from project.tests.test_log import TestLog
 
 migrate = Migrate(app, db)
 manager = Manager(app)
