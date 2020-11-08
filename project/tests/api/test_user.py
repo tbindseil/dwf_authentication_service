@@ -5,15 +5,20 @@ from project.server.models import User, BlacklistToken
 from project.server import db
 
 class TestUserBlueprint(BaseTestCase):
+    resp_register = None
+
+    def setUp(self):
+        BaseTestCase.setUp(self)
+        self.resp_register = self.register_user(email='joe@gmail.com', password='123456')
+
     def test_user_status(self):
         """ Test for user status """
         with self.client:
-            resp_register = self.register_user(email='joe@gmail.com', password='123456')
             response = self.client.get(
                 '/auth/user',
                 headers=dict(
                     Authorization='Bearer ' + json.loads(
-                        resp_register.data.decode()
+                        self.resp_register.data.decode()
                     )['auth_token']
                 )
             )
@@ -24,25 +29,22 @@ class TestUserBlueprint(BaseTestCase):
             self.assertTrue(data['data']['admin'] is 'true' or 'false')
             self.assertEqual(response.status_code, 200)
 
-    def test_decode_auth_token(self):
-        user = User(
-            email='test@test.com',
-            password='test'
-        )
-        db.session.add(user)
-        db.session.commit()
-        auth_token = user.encode_auth_token(user.id)
-        self.assertTrue(isinstance(auth_token, bytes))
-        self.assertTrue(User.decode_auth_token(
-            auth_token.decode("utf-8") ) == 1)
+    def test_user_status_no_auth_header(self):
+        with self.client:
+            response = self.client.get(
+                '/auth/user'
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'fail')
+            self.assertTrue(data['message'] == 'Provide a valid auth token.')
+            self.assertEqual(response.status_code, 401)
 
     def test_valid_blacklisted_token_user(self):
         """ Test for user status with a blacklisted valid token """
         with self.client:
-            resp_register = self.register_user(email='joe@gmail.com', password='123456')
             # blacklist a valid token
             blacklist_token = BlacklistToken(
-                token=json.loads(resp_register.data.decode())['auth_token'])
+                token=json.loads(self.resp_register.data.decode())['auth_token'])
             blacklist_token.__repr__()
             db.session.add(blacklist_token)
             db.session.commit()
@@ -50,7 +52,7 @@ class TestUserBlueprint(BaseTestCase):
                 '/auth/user',
                 headers=dict(
                     Authorization='Bearer ' + json.loads(
-                        resp_register.data.decode()
+                        self.resp_register.data.decode()
                     )['auth_token']
                 )
             )

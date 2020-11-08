@@ -52,6 +52,7 @@ class User(db.Model):
                 return 'Token blacklisted. Please log in again.'
             else:
                 return payload['sub']
+        # TODO probably should be thrown and handled in api..
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'
         except jwt.InvalidTokenError:

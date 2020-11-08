@@ -26,6 +26,7 @@ from project.tests.test_user_model import TestUserModel
 from project.tests.test_blacklist_token_model import TestBlacklistTokenModel
 from project.tests.test_log import TestLog
 from project.tests.test__config import TestDevelopmentConfig, TestTestingConfig, TestProductionConfig
+from project.tests.api.test_user import TestUserBlueprint
 
 migrate = Migrate(app, db)
 manager = Manager(app)
@@ -34,10 +35,16 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 
-@manager.command
-def test():
-    """Runs the unit tests without test coverage."""
-    tests = unittest.TestLoader().discover('project/tests', pattern='test*.py')
+@manager.option('-c', '--class', dest='test_class', default='all')
+def test(test_class):
+    """Runs the unit tests without test coverage.
+       If given a class name, will only run tests from that class"""
+    if test_class == 'all':
+        tests = unittest.TestLoader().discover('project/tests')
+    else:
+        # note, test module must be imported above, doing lazily for now
+        test_module = globals()[test_class]
+        tests = unittest.TestLoader().loadTestsFromTestCase(test_module)
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
         return 0
@@ -47,7 +54,7 @@ def test():
 @manager.option('-c', '--class', dest='test_class', default='all')
 def cov(test_class):
     """Runs the unit tests with coverage.
-       If given a class  name, will determine coverage from that class"""
+       If given a class name, will determine coverage from that class"""
     if test_class == 'all':
         tests = unittest.TestLoader().discover('project/tests')
     else:
