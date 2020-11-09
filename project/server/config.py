@@ -1,4 +1,4 @@
-# project/server/config.py
+import datetime
 
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -15,6 +15,7 @@ class BaseConfig:
     DEBUG = False
     BCRYPT_LOG_ROUNDS = 13
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    TOKEN_EXPIRE_TIME_DELTA = datetime.timedelta(days=7, seconds=0)
 
 
 class DevelopmentConfig(BaseConfig):
@@ -31,6 +32,7 @@ class TestingConfig(BaseConfig):
     BCRYPT_LOG_ROUNDS = 4
     SQLALCHEMY_DATABASE_URI = postgres_local_base + database_name + '_test'
     PRESERVE_CONTEXT_ON_EXCEPTION = False
+    TOKEN_EXPIRE_TIME_DELTA = datetime.timedelta(days=0, seconds=5),
 
 
 class ProductionConfig(BaseConfig):

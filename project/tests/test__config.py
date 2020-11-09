@@ -1,5 +1,6 @@
 import sys
 import unittest
+import datetime
 
 from flask import current_app
 from flask_testing import TestCase
@@ -19,6 +20,9 @@ class TestDevelopmentConfig(TestCase):
         self.assertTrue(
             app.config['SQLALCHEMY_DATABASE_URI'] == 'postgresql:///flask_jwt_auth'
         )
+        self.assertTrue(
+            app.config['TOKEN_EXPIRE_TIME_DELTA'] == datetime.timedelta(days=7, seconds=0)
+        )
 
 
 class TestTestingConfig(TestCase):
@@ -32,6 +36,9 @@ class TestTestingConfig(TestCase):
         self.assertTrue(
             app.config['SQLALCHEMY_DATABASE_URI'] == 'postgresql:///flask_jwt_auth_test'
         )
+        self.assertTrue(
+            app.config['TOKEN_EXPIRE_TIME_DELTA'][0] == datetime.timedelta(days=0, seconds=5)
+        )
 
 
 class TestProductionConfig(TestCase):
@@ -41,6 +48,9 @@ class TestProductionConfig(TestCase):
 
     def test_app_is_production(self):
         self.assertTrue(app.config['DEBUG'] is False)
+        self.assertTrue(
+            app.config['TOKEN_EXPIRE_TIME_DELTA'] == datetime.timedelta(days=7, seconds=0)
+        )
 
 
 if __name__ == '__main__':

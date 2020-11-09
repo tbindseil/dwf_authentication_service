@@ -85,7 +85,7 @@ class TestLogoutBlueprint(BaseTestCase):
     def test_invalid_logout(self):
         """ Testing logout after the token expires """
         with self.client:
-            # invalid token logout
+            # expire time is 5 seconds in testing only, ow 7 days
             time.sleep(6)
             response = self.client.post(
                 '/auth/logout',

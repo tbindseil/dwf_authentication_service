@@ -1,3 +1,5 @@
+from project.server.log import WARN
+
 import datetime
 import jwt
 
@@ -28,7 +30,7 @@ class User(db.Model):
         :return: string
         """
         payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
+            'exp': datetime.datetime.utcnow() + app.config.get('TOKEN_EXPIRE_TIME_DELTA')[0],
             'iat': datetime.datetime.utcnow(),
             'sub': user_id
         }
@@ -52,7 +54,6 @@ class User(db.Model):
                 return 'Token blacklisted. Please log in again.'
             else:
                 return payload['sub']
-        # TODO probably should be thrown and handled in api..
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'
         except jwt.InvalidTokenError:
