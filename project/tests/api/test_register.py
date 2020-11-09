@@ -4,9 +4,10 @@ import json
 from project.server import db
 from project.server.models import User
 from project.tests.base import BaseTestCase
+from unittest.mock import patch
 
 
-class TestAuthBlueprint(BaseTestCase):
+class TestRegisterBlueprint(BaseTestCase):
     def test_registration(self):
         """ Test for user registration """
         with self.client:
@@ -34,6 +35,18 @@ class TestAuthBlueprint(BaseTestCase):
                 data['message'] == 'User already exists. Please Log in.')
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 202)
+
+    def test_execption_during_register(self):
+        with patch("project.server.models.User.encode_auth_token") as mock_encode_auth_token:
+            with self.client:
+                mock_encode_auth_token.side_effect = Exception
+
+                response = self.register_user(email='joe@gmail.com', password='123456')
+                data = json.loads(response.data.decode())
+                self.assertTrue(data['status'] == 'fail')
+                self.assertTrue(data['message'] == 'Some error occurred. Please try again.')
+                self.assertTrue(response.content_type == 'application/json')
+                self.assertEqual(response.status_code, 401)
 
 
 if __name__ == '__main__':
