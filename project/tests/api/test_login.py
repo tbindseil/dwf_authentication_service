@@ -1,4 +1,4 @@
-from project.server.log import WARN
+from project.server.log import INFO
 
 import json
 

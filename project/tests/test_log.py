@@ -25,3 +25,15 @@ class TestLog(unittest.TestCase):
         outcome = log.WARN(msg)
 
         mock_log.warning.assert_called_with(msg)
+
+    @patch('logging.getLogger')
+    def test_debug(self, mock_getLogger):
+        msg = "msg"
+        mock_log = MagicMock()
+        mock_getLogger.return_value = mock_log
+
+        mock_log.info = MagicMock()
+
+        outcome = log.INFO(msg)
+
+        mock_log.info.assert_called_with(msg)

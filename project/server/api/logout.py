@@ -1,4 +1,4 @@
-from project.server.log import WARN
+from project.server.log import INFO
 
 from flask import request, make_response, jsonify
 from flask.views import MethodView
