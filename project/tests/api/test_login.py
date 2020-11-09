@@ -8,26 +8,24 @@ from unittest.mock import patch
 from project.server.models import User
 
 class TestLoginBlueprint(BaseTestCase):
-    def test_registered_user_login(self):
-        """ Test for login of registered-user login """
+    user_login_data = None
+
+    def setUp(self):
+        BaseTestCase.setUp(self)
+        self.user_login_data = json.dumps(dict(
+            email='joe@gmail.com',
+            password='123456'
+        ))
+
+    def test_login_succeeds_when_input_valid(self):
         with self.client:
             # user registration
             resp_register = self.register_user(email='joe@gmail.com', password='123456')
-            data_register = json.loads(resp_register.data.decode())
-            self.assertTrue(data_register['status'] == 'success')
-            self.assertTrue(
-                data_register['message'] == 'Successfully registered.'
-            )
-            self.assertTrue(data_register['auth_token'])
-            self.assertTrue(resp_register.content_type == 'application/json')
-            self.assertEqual(resp_register.status_code, 201)
+
             # registered user login
             response = self.client.post(
                 '/auth/login',
-                data=json.dumps(dict(
-                    email='joe@gmail.com',
-                    password='123456'
-                )),
+                data=self.user_login_data,
                 content_type='application/json'
             )
             data = json.loads(response.data.decode())
@@ -37,15 +35,11 @@ class TestLoginBlueprint(BaseTestCase):
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 200)
 
-    def test_non_registered_user_login(self):
-        """ Test for login of non-registered user """
+    def test_login_fails_for_non_registered_user_login(self):
         with self.client:
             response = self.client.post(
                 '/auth/login',
-                data=json.dumps(dict(
-                    email='joe@gmail.com',
-                    password='123456'
-                )),
+                data=self.user_login_data,
                 content_type='application/json'
             )
             data = json.loads(response.data.decode())
@@ -54,18 +48,10 @@ class TestLoginBlueprint(BaseTestCase):
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 404)
 
-    def test_exception_during_login(self):
+    def test_login_fails_when_exception_during_login(self):
         with self.client:
             # user registration
             resp_register = self.register_user(email='joe@gmail.com', password='123456')
-            data_register = json.loads(resp_register.data.decode())
-            self.assertTrue(data_register['status'] == 'success')
-            self.assertTrue(
-                data_register['message'] == 'Successfully registered.'
-            )
-            self.assertTrue(data_register['auth_token'])
-            self.assertTrue(resp_register.content_type == 'application/json')
-            self.assertEqual(resp_register.status_code, 201)
 
             with patch("project.server.models.User.encode_auth_token") as mock_encode_auth_token:
                 mock_encode_auth_token.side_effect = Exception
@@ -73,10 +59,7 @@ class TestLoginBlueprint(BaseTestCase):
                 # registered user login
                 response = self.client.post(
                     '/auth/login',
-                    data=json.dumps(dict(
-                        email='joe@gmail.com',
-                        password='123456'
-                    )),
+                    data=self.user_login_data,
                     content_type='application/json'
                 )
                 data = json.loads(response.data.decode())

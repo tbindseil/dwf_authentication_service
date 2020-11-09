@@ -17,13 +17,7 @@ class TestLogoutBlueprint(BaseTestCase):
         with self.client:
             # user registration
             resp_register = self.register_user(email='joe@gmail.com', password='123456')
-            data_register = json.loads(resp_register.data.decode())
-            self.assertTrue(data_register['status'] == 'success')
-            self.assertTrue(
-                data_register['message'] == 'Successfully registered.')
-            self.assertTrue(data_register['auth_token'])
-            self.assertTrue(resp_register.content_type == 'application/json')
-            self.assertEqual(resp_register.status_code, 201)
+
             # user login
             self.resp_login = self.client.post(
                 '/auth/login',

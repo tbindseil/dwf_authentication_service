@@ -11,8 +11,7 @@ class TestUserBlueprint(BaseTestCase):
         BaseTestCase.setUp(self)
         self.resp_register = self.register_user(email='joe@gmail.com', password='123456')
 
-    def test_user_status(self):
-        """ Test for user status """
+    def test_user_gets_user_status_when_valid_input(self):
         with self.client:
             response = self.client.get(
                 '/auth/user',
@@ -29,7 +28,7 @@ class TestUserBlueprint(BaseTestCase):
             self.assertTrue(data['data']['admin'] is 'true' or 'false')
             self.assertEqual(response.status_code, 200)
 
-    def test_user_status_no_auth_header(self):
+    def test_user_status_fails_when_no_auth_header(self):
         with self.client:
             response = self.client.get(
                 '/auth/user'
@@ -39,8 +38,7 @@ class TestUserBlueprint(BaseTestCase):
             self.assertTrue(data['message'] == 'Provide a valid auth token.')
             self.assertEqual(response.status_code, 401)
 
-    def test_valid_blacklisted_token_user(self):
-        """ Test for user status with a blacklisted valid token """
+    def test_user_status_fails_when_token_blacklisted(self):
         with self.client:
             # blacklist a valid token
             blacklist_token = BlacklistToken(

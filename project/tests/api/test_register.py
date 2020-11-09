@@ -8,8 +8,7 @@ from unittest.mock import patch
 
 
 class TestRegisterBlueprint(BaseTestCase):
-    def test_registration(self):
-        """ Test for user registration """
+    def test_registration_registers_when_input_valid(self):
         with self.client:
             response = self.register_user(email='joe@gmail.com', password='123456')
             data = json.loads(response.data.decode())
@@ -19,15 +18,10 @@ class TestRegisterBlueprint(BaseTestCase):
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 201)
 
-    def test_registered_with_already_registered_user(self):
-        """ Test registration with already registered email"""
-        user = User(
-            email='joe@gmail.com',
-            password='test'
-        )
-        db.session.add(user)
-        db.session.commit()
+    def test_register_fails_with_already_registered_user(self):
         with self.client:
+            response = self.register_user(email='joe@gmail.com', password='test')
+
             response = self.register_user(email='joe@gmail.com', password='123456')
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'fail')
@@ -36,7 +30,7 @@ class TestRegisterBlueprint(BaseTestCase):
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 202)
 
-    def test_execption_during_register(self):
+    def test_register_fails_when_execption_during_register(self):
         with patch("project.server.models.User.encode_auth_token") as mock_encode_auth_token:
             with self.client:
                 mock_encode_auth_token.side_effect = Exception
