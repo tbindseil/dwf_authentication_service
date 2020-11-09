@@ -1,3 +1,5 @@
+from project.server.log import WARN
+
 from flask import request, make_response, jsonify
 from flask.views import MethodView
 
@@ -32,7 +34,7 @@ class LogoutAPI(MethodView):
                 except Exception as e:
                     responseObject = {
                         'status': 'fail',
-                        'message': e
+                        'message': str(e)
                     }
                     return make_response(jsonify(responseObject)), 200
             else:

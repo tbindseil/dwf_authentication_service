@@ -1,11 +1,14 @@
+from project.server.log import WARN
+
 import json
 import time
 
 from project.tests.base import BaseTestCase
 from project.server.models import User, BlacklistToken
 from project.server import db
+from unittest.mock import patch, MagicMock
 
-class TestUserBlueprint(BaseTestCase):
+class TestLogoutBlueprint(BaseTestCase):
     resp_login = None
 
     def setUp(self):
@@ -54,7 +57,35 @@ class TestUserBlueprint(BaseTestCase):
             self.assertTrue(data['message'] == 'Successfully logged out.')
             self.assertEqual(response.status_code, 200)
 
-    # def test_logout_no_header(self):
+    def test_logout_no_header(self):
+        with self.client:
+            response = self.client.post(
+                '/auth/logout'
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'fail')
+            self.assertTrue(data['message'] == 'Provide a valid auth token.')
+            self.assertEqual(response.status_code, 403)
+
+    @patch('project.server.db.session')
+    def test_logout_exception_thrown(self, mock_session):
+        with self.client:
+            msg = "msg"
+            mock_session.commit = MagicMock()
+            mock_session.commit.side_effect = Exception(msg)
+
+            response = self.client.post(
+                '/auth/logout',
+                headers=dict(
+                    Authorization='Bearer ' + json.loads(
+                        self.resp_login.data.decode()
+                    )['auth_token']
+                )
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'fail')
+            self.assertTrue(data['message'] == msg, "data['message'] is: " + data['message'])
+            self.assertEqual(response.status_code, 200)
 
 
     def test_invalid_logout(self):
