@@ -28,6 +28,3 @@ class BaseTestCase(TestCase):
             )),
             content_type='application/json',
         )
-
-
-

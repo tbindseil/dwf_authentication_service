@@ -1,3 +1,5 @@
+from project.server.log import WARN
+
 from flask import request, make_response, jsonify
 from flask.views import MethodView
 
@@ -20,13 +22,12 @@ class LoginAPI(MethodView):
                 user.password, post_data.get('password')
             ):
                 auth_token = user.encode_auth_token(user.id)
-                if auth_token:
-                    responseObject = {
-                        'status': 'success',
-                        'message': 'Successfully logged in.',
-                        'auth_token': auth_token.decode()
-                    }
-                    return make_response(jsonify(responseObject)), 200
+                responseObject = {
+                    'status': 'success',
+                     'message': 'Successfully logged in.',
+                     'auth_token': auth_token.decode()
+                }
+                return make_response(jsonify(responseObject)), 200
             else:
                 responseObject = {
                     'status': 'fail',

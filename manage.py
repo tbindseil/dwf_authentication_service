@@ -28,6 +28,7 @@ from project.tests.test_log import TestLog
 from project.tests.test__config import TestDevelopmentConfig, TestTestingConfig, TestProductionConfig
 from project.tests.api.test_user import TestUserBlueprint
 from project.tests.api.test_logout import TestLogoutBlueprint
+from project.tests.api.test_login import TestLoginBlueprint
 
 migrate = Migrate(app, db)
 manager = Manager(app)
