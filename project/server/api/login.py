@@ -1,4 +1,6 @@
-from project.server.log import INFO
+from project.server.log import INFO, WARN
+
+import traceback
 
 from flask import request, make_response, jsonify
 from flask.views import MethodView
@@ -23,7 +25,7 @@ class LoginAPI(MethodView):
             ):
                 auth_token = user.encode_auth_token(user.id)
                 responseObject = {
-                    'status': 'success',
+                     'status': 'success',
                      'message': 'Successfully logged in.',
                      'username': user.username,
                      'auth_token': auth_token.decode()
@@ -36,7 +38,7 @@ class LoginAPI(MethodView):
                 }
                 return make_response(jsonify(responseObject)), 404
         except Exception as e:
-            print(e)
+            WARN(e)
             responseObject = {
                 'status': 'fail',
                 'message': 'Try again'

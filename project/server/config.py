@@ -32,7 +32,7 @@ class TestingConfig(BaseConfig):
     BCRYPT_LOG_ROUNDS = 4
     SQLALCHEMY_DATABASE_URI = postgres_local_base + database_name + '_test'
     PRESERVE_CONTEXT_ON_EXCEPTION = False
-    TOKEN_EXPIRE_TIME_DELTA = datetime.timedelta(days=0, seconds=5),
+    TOKEN_EXPIRE_TIME_DELTA = datetime.timedelta(days=0, seconds=5)
 
 
 class ProductionConfig(BaseConfig):

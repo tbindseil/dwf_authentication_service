@@ -30,7 +30,7 @@ class User(db.Model):
         :return: string
         """
         payload = {
-            'exp': datetime.datetime.utcnow() + app.config.get('TOKEN_EXPIRE_TIME_DELTA')[0],
+            'exp': datetime.datetime.utcnow() + app.config.get('TOKEN_EXPIRE_TIME_DELTA'),
             'iat': datetime.datetime.utcnow(),
             'sub': user_id
         }

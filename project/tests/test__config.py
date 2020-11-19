@@ -37,7 +37,7 @@ class TestTestingConfig(TestCase):
             app.config['SQLALCHEMY_DATABASE_URI'] == 'postgresql:///flask_jwt_auth_test'
         )
         self.assertTrue(
-            app.config['TOKEN_EXPIRE_TIME_DELTA'][0] == datetime.timedelta(days=0, seconds=5)
+            app.config['TOKEN_EXPIRE_TIME_DELTA'] == datetime.timedelta(days=0, seconds=5)
         )
 
 
