@@ -19,11 +19,11 @@ class BaseTestCase(TestCase):
         db.session.remove()
         db.drop_all()
 
-    def register_user(self, email, password):
+    def register_user(self, username, password):
         return self.client.post(
             '/auth/register',
             data=json.dumps(dict(
-                email=email,
+                username=username,
                 password=password
             )),
             content_type='application/json',

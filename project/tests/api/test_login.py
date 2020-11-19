@@ -13,14 +13,14 @@ class TestLoginBlueprint(BaseTestCase):
     def setUp(self):
         BaseTestCase.setUp(self)
         self.user_login_data = json.dumps(dict(
-            email='joe@gmail.com',
+            username='joe@gmail.com',
             password='123456'
         ))
 
     def test_login_succeeds_when_input_valid(self):
         with self.client:
             # user registration
-            resp_register = self.register_user(email='joe@gmail.com', password='123456')
+            resp_register = self.register_user(username='joe@gmail.com', password='123456')
 
             # registered user login
             response = self.client.post(
@@ -31,6 +31,7 @@ class TestLoginBlueprint(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['message'] == 'Successfully logged in.')
+            self.assertTrue(data['username'] == 'joe@gmail.com')
             self.assertTrue(data['auth_token'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 200)
@@ -51,7 +52,7 @@ class TestLoginBlueprint(BaseTestCase):
     def test_login_fails_when_exception_during_login(self):
         with self.client:
             # user registration
-            resp_register = self.register_user(email='joe@gmail.com', password='123456')
+            resp_register = self.register_user(username='joe@gmail.com', password='123456')
 
             with patch("project.server.models.User.encode_auth_token") as mock_encode_auth_token:
                 mock_encode_auth_token.side_effect = Exception

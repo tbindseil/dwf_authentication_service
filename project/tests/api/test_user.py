@@ -9,7 +9,7 @@ class TestUserBlueprint(BaseTestCase):
 
     def setUp(self):
         BaseTestCase.setUp(self)
-        self.resp_register = self.register_user(email='joe@gmail.com', password='123456')
+        self.resp_register = self.register_user(username='joe@gmail.com', password='123456')
 
     def test_user_gets_user_status_when_valid_input(self):
         with self.client:
@@ -24,7 +24,7 @@ class TestUserBlueprint(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['data'] is not None)
-            self.assertTrue(data['data']['email'] == 'joe@gmail.com')
+            self.assertTrue(data['data']['username'] == 'joe@gmail.com')
             self.assertTrue(data['data']['admin'] is 'true' or 'false')
             self.assertEqual(response.status_code, 200)
 

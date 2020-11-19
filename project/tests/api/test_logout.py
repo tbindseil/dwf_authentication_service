@@ -16,13 +16,13 @@ class TestLogoutBlueprint(BaseTestCase):
 
         with self.client:
             # user registration
-            resp_register = self.register_user(email='joe@gmail.com', password='123456')
+            resp_register = self.register_user(username='joe@gmail.com', password='123456')
 
             # user login
             self.resp_login = self.client.post(
                 '/auth/login',
                 data=json.dumps(dict(
-                    email='joe@gmail.com',
+                    username='joe@gmail.com',
                     password='123456'
                 )),
                 content_type='application/json'

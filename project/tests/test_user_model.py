@@ -13,7 +13,7 @@ class TestUserModel(BaseTestCase):
     def setUp(self):
         BaseTestCase.setUp(self)
         self.user = User(
-            email='test@test.com',
+            username='test@test.com',
             password='test'
         )
         db.session.add(self.user)

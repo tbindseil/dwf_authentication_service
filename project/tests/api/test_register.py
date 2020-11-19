@@ -10,19 +10,20 @@ from unittest.mock import patch
 class TestRegisterBlueprint(BaseTestCase):
     def test_registration_registers_when_input_valid(self):
         with self.client:
-            response = self.register_user(email='joe@gmail.com', password='123456')
+            response = self.register_user(username='joe@gmail.com', password='123456')
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['message'] == 'Successfully registered.')
+            self.assertTrue(data['username'] == 'joe@gmail.com')
             self.assertTrue(data['auth_token'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 201)
 
     def test_register_fails_with_already_registered_user(self):
         with self.client:
-            response = self.register_user(email='joe@gmail.com', password='test')
+            response = self.register_user(username='joe@gmail.com', password='test')
 
-            response = self.register_user(email='joe@gmail.com', password='123456')
+            response = self.register_user(username='joe@gmail.com', password='123456')
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'fail')
             self.assertTrue(
@@ -35,7 +36,7 @@ class TestRegisterBlueprint(BaseTestCase):
             with self.client:
                 mock_encode_auth_token.side_effect = Exception
 
-                response = self.register_user(email='joe@gmail.com', password='123456')
+                response = self.register_user(username='joe@gmail.com', password='123456')
                 data = json.loads(response.data.decode())
                 self.assertTrue(data['status'] == 'fail')
                 self.assertTrue(data['message'] == 'Some error occurred. Please try again.')
