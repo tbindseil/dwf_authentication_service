@@ -32,7 +32,7 @@ class TestLoginBlueprint(BaseTestCase):
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['message'] == 'Successfully logged in.')
             self.assertTrue(data['username'] == 'joe@gmail.com')
-            self.assertTrue(data['auth_token'])
+            self.assertTrue(data['token'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 200)
 
@@ -54,8 +54,8 @@ class TestLoginBlueprint(BaseTestCase):
             # user registration
             resp_register = self.register_user(username='joe@gmail.com', password='123456')
 
-            with patch("project.server.models.User.encode_auth_token") as mock_encode_auth_token:
-                mock_encode_auth_token.side_effect = Exception
+            with patch("project.server.models.User.encode_token") as mock_encode_token:
+                mock_encode_token.side_effect = Exception
 
                 # registered user login
                 response = self.client.post(

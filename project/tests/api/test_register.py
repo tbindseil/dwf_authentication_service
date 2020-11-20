@@ -15,7 +15,7 @@ class TestRegisterBlueprint(BaseTestCase):
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['message'] == 'Successfully registered.')
             self.assertTrue(data['username'] == 'joe@gmail.com')
-            self.assertTrue(data['auth_token'])
+            self.assertTrue(data['token'])
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 201)
 
@@ -32,9 +32,9 @@ class TestRegisterBlueprint(BaseTestCase):
             self.assertEqual(response.status_code, 202)
 
     def test_register_fails_when_execption_during_register(self):
-        with patch("project.server.models.User.encode_auth_token") as mock_encode_auth_token:
+        with patch("project.server.models.User.encode_token") as mock_encode_token:
             with self.client:
-                mock_encode_auth_token.side_effect = Exception
+                mock_encode_token.side_effect = Exception
 
                 response = self.register_user(username='joe@gmail.com', password='123456')
                 data = json.loads(response.data.decode())

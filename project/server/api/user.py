@@ -11,11 +11,11 @@ class UserAPI(MethodView):
         # get the auth token
         auth_header = request.headers.get('Authorization')
         if auth_header:
-            auth_token = auth_header.split(" ")[1]
+            token = auth_header.split(" ")[1]
         else:
-            auth_token = ''
-        if auth_token:
-            resp = User.decode_auth_token(auth_token)
+            token = ''
+        if token:
+            resp = User.decode_token(token)
             if not isinstance(resp, str):
                 user = User.query.filter_by(id=resp).first()
                 responseObject = {

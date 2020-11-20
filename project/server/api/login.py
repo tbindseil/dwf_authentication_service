@@ -23,12 +23,12 @@ class LoginAPI(MethodView):
             if user and bcrypt.check_password_hash(
                 user.password, post_data.get('password')
             ):
-                auth_token = user.encode_auth_token(user.id)
+                token = user.encode_token(user.id)
                 responseObject = {
                      'status': 'success',
                      'message': 'Successfully logged in.',
                      'username': user.username,
-                     'auth_token': auth_token.decode()
+                     'token': token.decode()
                 }
                 return make_response(jsonify(responseObject)), 200
             else:

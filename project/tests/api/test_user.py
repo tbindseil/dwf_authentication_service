@@ -18,7 +18,7 @@ class TestUserBlueprint(BaseTestCase):
                 headers=dict(
                     Authorization='Bearer ' + json.loads(
                         self.resp_register.data.decode()
-                    )['auth_token']
+                    )['token']
                 )
             )
             data = json.loads(response.data.decode())
@@ -42,7 +42,7 @@ class TestUserBlueprint(BaseTestCase):
         with self.client:
             # blacklist a valid token
             blacklist_token = BlacklistToken(
-                token=json.loads(self.resp_register.data.decode())['auth_token'])
+                token=json.loads(self.resp_register.data.decode())['token'])
             blacklist_token.__repr__()
             db.session.add(blacklist_token)
             db.session.commit()
@@ -51,7 +51,7 @@ class TestUserBlueprint(BaseTestCase):
                 headers=dict(
                     Authorization='Bearer ' + json.loads(
                         self.resp_register.data.decode()
-                    )['auth_token']
+                    )['token']
                 )
             )
             data = json.loads(response.data.decode())

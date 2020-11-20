@@ -90,6 +90,12 @@ def drop_db():
     """Drops the db tables."""
     db.drop_all()
 
+from project.server.models import User
+@manager.command
+def t():
+    """free form code"""
+    user = User.query.filter_by(username="v").first()
+    print("username is: " + user.username)
 
 if __name__ == '__main__':
     manager.run()
